@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class Bullet : MonoBehaviour
+public class Bullet : NetworkBehaviour
 {
-    [SerializeField] float _timeToDestroy = 5f, _speed = 7f;
+    [SerializeField] float _timeToDestroy = 5f, _speed = 7f, _dmg;
     float _timer = 0f;
     Vector3 _dir;
 
@@ -20,6 +21,18 @@ public class Bullet : MonoBehaviour
         }
 
         transform.position += _dir.normalized * _speed * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!Object || !Object.HasStateAuthority) return;
+
+        if(other.TryGetComponent(out Player enemy))
+        {
+            enemy.TakeDamage(_dmg);
+        }
+
+        Runner.Despawn(Object);
     }
 
 }

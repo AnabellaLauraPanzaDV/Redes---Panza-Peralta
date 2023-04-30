@@ -5,7 +5,7 @@ using Fusion;
 
 public struct NetworkInputData : INetworkInput
 {
-    public float movementInput;
+    public float movementInputH, movementInputV;
     public NetworkBool isJumpPessed;
     public NetworkBool isFirePessed;
 }
