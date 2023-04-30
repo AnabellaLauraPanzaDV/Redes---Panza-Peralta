@@ -23,7 +23,7 @@ public class SpawnNetworkPlayer : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        if (NetworkPlayer.Local) return;
+        if (!NetworkPlayer.Local) return;
 
         if (!_characterInputHandler)
         {
