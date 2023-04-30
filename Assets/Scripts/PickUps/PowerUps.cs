@@ -5,10 +5,13 @@ using Fusion;
 
 public class PowerUps : NetworkBehaviour
 {
+    protected Player _pl;
+
     private void OnTriggerEnter(Collider other)
     {
         if (!Object || !Object.HasStateAuthority) return;
-        if (other.tag == "Player")
+        Debug.Log(TryGetComponent(out _pl));
+        if (TryGetComponent(out _pl))
         {
             PU_Action();
             Runner.Despawn(Object);

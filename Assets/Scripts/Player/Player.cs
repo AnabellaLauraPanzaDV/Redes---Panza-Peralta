@@ -10,6 +10,7 @@ public class Player : NetworkBehaviour
     [SerializeField] ParticleSystem _shootParticle;
     [SerializeField] Transform _shootPos;
 
+
     float _currentLife;
     NetworkRigidbody _rb;
 
@@ -45,11 +46,14 @@ public class Player : NetworkBehaviour
 
     void Movement(float _h, float _v)
     {
-        Vector3 dir = new Vector3(_h, 0f, _v);
+        Vector3 dir = new Vector3(_h, 0, _v);
 
         _rb.Rigidbody.velocity = dir * _speed;
 
-        if (dir != Vector3.zero) transform.forward = dir.normalized;
+        if (dir != Vector3.zero)
+        {            
+            transform.forward = new Vector3(dir.x, 0f, dir.z).normalized;
+        }
     }
 
     void Jump()
