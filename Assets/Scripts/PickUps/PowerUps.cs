@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class PowerUps : MonoBehaviour
+public class PowerUps : NetworkBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if (!Object || !Object.HasStateAuthority) return;
+        if (other.tag == "Player")
         {
             PU_Action();
-            Destroy(gameObject);
+            Runner.Despawn(Object);
         }
     }
 

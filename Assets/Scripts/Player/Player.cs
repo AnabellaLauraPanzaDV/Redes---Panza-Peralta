@@ -8,6 +8,7 @@ public class Player : NetworkBehaviour
     [SerializeField] float _speed = 5f, _jumpForce, _maxLife;
     [SerializeField] Bullet _bulletPrefab;
     [SerializeField] ParticleSystem _shootParticle;
+    [SerializeField] Transform _shootPos;
 
     float _currentLife;
     NetworkRigidbody _rb;
@@ -27,7 +28,6 @@ public class Player : NetworkBehaviour
     {
         if (GetInput(out _networkInputData))
         {
-            Debug.Log("your mother");
             Movement(_networkInputData.movementInputH, _networkInputData.movementInputV);
 
             if (_networkInputData.isJumpPessed)
@@ -68,7 +68,7 @@ public class Player : NetworkBehaviour
         Bullet b = Runner.Spawn(_bulletPrefab);
 
         //Bullet b = Instantiate(_bulletPrefab);
-        b.transform.position = transform.position;
+        b.transform.position = _shootPos.position;
         b.SetDir(transform.forward);
     }
 
