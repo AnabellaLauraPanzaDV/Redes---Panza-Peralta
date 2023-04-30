@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class Shield : MonoBehaviour
+public class Shield : NetworkBehaviour
 {
     [SerializeField] GameObject GO_Shield;
     [SerializeField] float _duration, maxHits;
@@ -10,18 +11,18 @@ public class Shield : MonoBehaviour
 
     private void Start()
     {
-        GO_Shield.SetActive(false);
+        GO_Shield.gameObject.SetActive(false);
     }
 
     public void ActivateShield()
     {
-        GO_Shield.SetActive(true);
+        GO_Shield.gameObject.SetActive(true);
         StartCoroutine(StartTimer());
     }
 
     public void DeactivateShield()
     {
-        GO_Shield.SetActive(false);
+        GO_Shield.gameObject.SetActive(false);
     }
 
     IEnumerator StartTimer()

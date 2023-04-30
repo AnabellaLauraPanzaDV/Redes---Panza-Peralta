@@ -112,7 +112,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  _shield: {fileID: 0}
 --- !u!114 &5417976169351956308
 MonoBehaviour:
   m_ObjectHideFlags: 0

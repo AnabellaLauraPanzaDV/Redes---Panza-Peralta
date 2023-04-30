@@ -10,8 +10,7 @@ public class PowerUps : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!Object || !Object.HasStateAuthority) return;
-        Debug.Log(TryGetComponent(out _pl));
-        if (TryGetComponent(out _pl))
+        if (other.TryGetComponent(out _pl))
         {
             PU_Action();
             Runner.Despawn(Object);
