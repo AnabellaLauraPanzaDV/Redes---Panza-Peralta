@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 5031158806011617560}
   - component: {fileID: -63906782747154153}
   - component: {fileID: 845635560047707710}
+  - component: {fileID: 2627263074332360835}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -342,6 +343,7 @@ MonoBehaviour:
   - {fileID: 5704546868408571318}
   - {fileID: 652596095648756825}
   - {fileID: 845635560047707710}
+  - {fileID: 2627263074332360835}
   SimulationBehaviours: []
 --- !u!114 &845635560047707710
 MonoBehaviour:
@@ -373,6 +375,21 @@ MonoBehaviour:
     _hash: -814817977
   StateHashes: 000000008b7cfd670f5f2b888a18fce4b9abd9d3ffa4c8127deb8497
   TriggerHashes: 000000001ae6174d
+--- !u!114 &2627263074332360835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3467479640207504293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac78bb8c76d965e42a225542745702b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  currentStarCount: 0
+  totalStar: 3
 --- !u!1001 &3467479638328137556
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PU_Star : MonoBehaviour
+public class PU_Star : PowerUps
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    WinCondition _winCondition;
 
-    // Update is called once per frame
-    void Update()
+    public override void PU_Action()
     {
-        
+        _winCondition = _pl.GetComponent<WinCondition>();
+        _winCondition.GainStar();
     }
 }
