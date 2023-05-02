@@ -8,6 +8,7 @@ public class Player : NetworkBehaviour
     [SerializeField] float _speed = 5f, _jumpForce, _maxLife;
     [SerializeField] Bullet _bulletPrefab;
     [SerializeField] ParticleSystem _shootParticle;
+    [SerializeField] ParticleSystem _shootParticle2;
     [SerializeField] Transform _shootPos;
 
 
@@ -96,6 +97,7 @@ public class Player : NetworkBehaviour
         if(!previousFire && _currentFire)
         {
             changed.Behaviour._shootParticle.Play();
+            changed.Behaviour._shootParticle2.Play();
         }
     }
 
