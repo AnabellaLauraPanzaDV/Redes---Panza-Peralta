@@ -5,11 +5,18 @@ using Fusion;
 
 public class Bullet : NetworkBehaviour
 {
+    [SerializeField] NetworkRigidbody _rgbd;
     [SerializeField] float _timeToDestroy = 5f, _speed = 7f, _dmg;
     float _timer = 0f;
-    Vector3 _dir;
+    Player _pl;
 
-    public void SetDir(Vector3 dir) { _dir = dir; }
+    private void Start()
+    {
+        _rgbd.Rigidbody.AddForce(transform.forward * 10f, ForceMode.VelocityChange);
+    }
+
+    public void GetPlayer(Player pl) { _pl = pl; }
+
 
     private void Update()
     {
@@ -17,10 +24,10 @@ public class Bullet : NetworkBehaviour
 
         if(_timer >= _timeToDestroy)
         {
-            Destroy(gameObject);
+            Runner.Despawn(Object);
         }
 
-        transform.position += _dir.normalized * _speed * Time.deltaTime;
+        //transform.position += transform.forward.normalized * _speed * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,6 +36,7 @@ public class Bullet : NetworkBehaviour
 
         if(other.TryGetComponent(out Player enemy))
         {
+            if (enemy == _pl) return;
             enemy.TakeDamage(_dmg);
         }
 

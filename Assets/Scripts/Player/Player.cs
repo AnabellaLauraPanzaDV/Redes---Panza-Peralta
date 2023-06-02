@@ -11,8 +11,11 @@ public class Player : NetworkBehaviour
     [SerializeField] ParticleSystem _shootParticle2;
     [SerializeField] Transform _shootPos;
 
+    bool _canJump;
 
-    float _currentLife;
+    [Networked(OnChanged = nameof(LifeChangedCallback))]
+    float _currentLife { get; set; }
+
     NetworkRigidbody _rb;
 
     NetworkInputData _networkInputData;
@@ -47,20 +50,23 @@ public class Player : NetworkBehaviour
 
     void Movement(float _h, float _v)
     {
-        Vector3 dir = new Vector3(_h, 0, _v);
+        Vector3 dir = Vector3.forward * _v + Vector3.right * _h;
 
-        _rb.Rigidbody.velocity = dir * _speed;
+        _rb.Rigidbody.MovePosition(transform.position + dir * _speed * Time.fixedDeltaTime);
 
         if (dir != Vector3.zero)
-        {            
-            transform.forward = new Vector3(dir.x, 0f, dir.z).normalized;
+        {
+            transform.forward = dir.normalized;
         }
     }
 
     void Jump()
     {
+        if (!_canJump) return;
         _rb.Rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
+        _canJump = false;
     }
+
 
     void Shoot()
     {
@@ -70,11 +76,32 @@ public class Player : NetworkBehaviour
 
         StartCoroutine(ShootCD());
 
-        Bullet b = Runner.Spawn(_bulletPrefab);
+        Bullet b = Runner.Spawn(_bulletPrefab , _shootPos.position , transform.rotation);
+        b.GetPlayer(this);
+    }
 
-        //Bullet b = Instantiate(_bulletPrefab);
-        b.transform.position = _shootPos.position;
-        b.SetDir(transform.forward);
+    public void TakeDamage(float dmg)
+    {
+        RPC_GetHit(dmg);
+    }
+
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    void RPC_GetHit(float dmg)
+    {
+        _currentLife -= dmg;
+
+        if (_currentLife <= 0) Dead();
+    }
+
+    static void LifeChangedCallback(Changed<Player> changed)
+    {
+
+    }
+
+    void Dead()
+    {
+        Runner.Shutdown();
     }
 
     IEnumerator ShootCD()
@@ -101,9 +128,9 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public void TakeDamage(float dmg)
+    private void OnCollisionEnter(Collision collision)
     {
-        _currentLife -= dmg;
+        if (collision.gameObject.tag == "Floor") _canJump = true;
     }
-    
+
 }

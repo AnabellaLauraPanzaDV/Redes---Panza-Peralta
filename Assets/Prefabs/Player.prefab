@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844486454289808765}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.333, z: 0.216}
+  m_LocalPosition: {x: 0, y: 0.333, z: 0.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -243,8 +243,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   _speed: 5
-  _jumpForce: 15
-  _maxLife: 0
+  _jumpForce: 5
+  _maxLife: 100
   _bulletPrefab: {fileID: 721901783861797458, guid: e00404aa9c12a614a8d24f4cc300121f, type: 3}
   _shootParticle: {fileID: 4614539882059995672}
   _shootParticle2: {fileID: 5905691123485031408}
@@ -376,8 +376,8 @@ MonoBehaviour:
     _value: 0
     _inverse: 0
     _hash: -814817977
-  StateHashes: 000000008b7cfd670f5f2b888a18fce4b9abd9d3ffa4c8127deb8497
-  TriggerHashes: 000000001ae6174d
+  StateHashes: 000000008a18fce4b9abd9d3ffa4c8127deb84972b1a167c794069558b7cfd670f5f2b88
+  TriggerHashes: 00000000
 --- !u!114 &2627263074332360835
 MonoBehaviour:
   m_ObjectHideFlags: 0

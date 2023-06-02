@@ -11,7 +11,7 @@ public class PU_Manager : NetworkBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) StartCoroutine(TimerSpawnShield());
+        if (Input.GetKeyDown(KeyCode.P)) SpawnShield();
         if (Input.GetKeyDown(KeyCode.O)) SpawnStar();
     }
 
@@ -23,18 +23,22 @@ public class PU_Manager : NetworkBehaviour
 
     public void SpawnShield()
     {
-        var pos = GetRandomPos();
-
-        var shield = Runner.Spawn(_shieldPrefab);
-        shield.transform.position = pos;
+        RPC_SpawnShield();
     }
+
+    [Rpc(RpcSources.All, RpcTargets.Proxies)]
+    void RPC_SpawnShield()
+    {
+        var pos = GetRandomPos();
+        Runner.Spawn(_shieldPrefab, pos);
+    }
+
+    
 
     public void SpawnStar()
     {
         var pos = GetRandomPos();
-
-        var star = Runner.Spawn(_starPrefab);
-        star.transform.position = pos;
+        Runner.Spawn(_starPrefab, pos);
     }
 
     Vector3 GetRandomPos()
