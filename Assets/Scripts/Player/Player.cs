@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class Player : NetworkBehaviour
+public class Player : NetworkBehaviour, IDamageable
 {
     [SerializeField] float _speed = 5f, _jumpForce, _maxLife;
     [SerializeField] Bullet _bulletPrefab;
     [SerializeField] ParticleSystem _shootParticle;
     [SerializeField] ParticleSystem _shootParticle2;
     [SerializeField] Transform _shootPos;
+    
 
     bool _canJump;
 
     [Networked(OnChanged = nameof(LifeChangedCallback))]
     float _currentLife { get; set; }
 
+    Shield _shield;
     NetworkRigidbody _rb;
 
     NetworkInputData _networkInputData;
@@ -27,6 +29,7 @@ public class Player : NetworkBehaviour
     {
         _currentLife = _maxLife;
         _rb = GetComponent<NetworkRigidbody>();
+        _shield = GetComponent<Shield>();
     }
 
     public override void FixedUpdateNetwork()
@@ -43,6 +46,11 @@ public class Player : NetworkBehaviour
             if (_networkInputData.isFirePessed)
             {
                 Shoot();
+            }
+
+            if (_networkInputData.isShieldPressed)
+            {
+                UseShield();
             }
         }
         
@@ -78,6 +86,11 @@ public class Player : NetworkBehaviour
 
         Bullet b = Runner.Spawn(_bulletPrefab , _shootPos.position , transform.rotation);
         b.GetPlayer(this);
+    }
+
+    void UseShield()
+    {
+        _shield.ShieldPressed();
     }
 
     public void TakeDamage(float dmg)

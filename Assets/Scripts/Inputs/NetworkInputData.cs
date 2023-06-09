@@ -8,4 +8,5 @@ public struct NetworkInputData : INetworkInput
     public float movementInputH, movementInputV;
     public NetworkBool isJumpPessed;
     public NetworkBool isFirePessed;
+    public NetworkBool isShieldPressed;
 }

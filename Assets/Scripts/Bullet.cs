@@ -8,14 +8,15 @@ public class Bullet : NetworkBehaviour
     [SerializeField] NetworkRigidbody _rgbd;
     [SerializeField] float _timeToDestroy = 5f, _speed = 7f, _dmg;
     float _timer = 0f;
-    Player _pl;
+    IDamageable _pl;
+    GameObject _GO_Shield;
 
     private void Start()
     {
         _rgbd.Rigidbody.AddForce(transform.forward * 10f, ForceMode.VelocityChange);
     }
 
-    public void GetPlayer(Player pl) { _pl = pl; }
+    public void GetPlayer(Player pl) { _pl = pl; _GO_Shield = pl.GetComponent<Shield>().GO_Shield; }
 
 
     private void Update()
@@ -34,10 +35,12 @@ public class Bullet : NetworkBehaviour
     {
         if (!Object || !Object.HasStateAuthority) return;
 
-        if(other.TryGetComponent(out Player enemy))
+        if (other.gameObject == _GO_Shield) return;
+
+        if(other.TryGetComponent(out IDamageable damageable))
         {
-            if (enemy == _pl) return;
-            enemy.TakeDamage(_dmg);
+            if (damageable == _pl) return;
+            damageable.TakeDamage(_dmg);
         }
 
         Runner.Despawn(Object);

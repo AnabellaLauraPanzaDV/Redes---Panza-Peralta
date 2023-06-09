@@ -9,7 +9,7 @@ public class CharacterInputHandler : MonoBehaviour
     NetworkInputData _inputData;
 
     float _moveInputH, _moveInputV;
-    bool _isFirePressed, _isJumpPressed;
+    bool _isFirePressed, _isJumpPressed, _isShieldPressed;
 
     private void Start()
     {
@@ -33,6 +33,11 @@ public class CharacterInputHandler : MonoBehaviour
         {
             _isFirePressed = true;
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            _isShieldPressed = true;
+        }
     }
 
     public NetworkInputData GetNetworkInput() 
@@ -45,6 +50,9 @@ public class CharacterInputHandler : MonoBehaviour
 
         _inputData.isFirePessed = _isFirePressed;
         _isFirePressed = false;
+
+        _inputData.isShieldPressed = _isShieldPressed;
+        _isShieldPressed = false;
 
         return _inputData;
     }
