@@ -19,6 +19,7 @@ public class Player : NetworkBehaviour, IDamageable
 
     Shield _shield;
     NetworkRigidbody _rb;
+    PL_StarManagement starManagement;
 
     NetworkInputData _networkInputData;
 
@@ -30,6 +31,8 @@ public class Player : NetworkBehaviour, IDamageable
         _currentLife = _maxLife;
         _rb = GetComponent<NetworkRigidbody>();
         _shield = GetComponent<Shield>();
+        starManagement = new PL_StarManagement(this);
+        GameManager.instance.endGame_action += EndGame;
     }
 
     public override void FixedUpdateNetwork()
@@ -56,6 +59,11 @@ public class Player : NetworkBehaviour, IDamageable
         
     }
 
+    public void GainStar()
+    {
+        starManagement.GainStar();
+    }
+
     void Movement(float _h, float _v)
     {
         Vector3 dir = Vector3.forward * _v + Vector3.right * _h;
@@ -74,7 +82,6 @@ public class Player : NetworkBehaviour, IDamageable
         _rb.Rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
         _canJump = false;
     }
-
 
     void Shoot()
     {
@@ -97,7 +104,6 @@ public class Player : NetworkBehaviour, IDamageable
     {
         RPC_GetHit(dmg);
     }
-
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     void RPC_GetHit(float dmg)
@@ -144,6 +150,17 @@ public class Player : NetworkBehaviour, IDamageable
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Floor") _canJump = true;
+    }
+
+    void EndGame()
+    {
+        RPC_EndGame();
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    void RPC_EndGame()
+    {
+        Dead();
     }
 
 }

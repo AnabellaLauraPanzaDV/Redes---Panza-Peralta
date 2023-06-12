@@ -37,9 +37,11 @@ public class Shield : NetworkBehaviour
 
     IEnumerator StartTimer()
     {
+        UIManager.instance.ShieldCoolDown(true);
         yield return new WaitForSeconds(_duration);
         DeactivateShield();
         yield return new WaitForSeconds(coolDown);
+        UIManager.instance.ShieldCoolDown(false);
         _canUse = true;
     }    
 

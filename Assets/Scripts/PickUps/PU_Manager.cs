@@ -3,53 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class PU_Manager : NetworkBehaviour
+public class PU_Manager : MonoBehaviour
 {
-    [SerializeField] float _limitX, _limitZ, _varY;
-    [SerializeField] Transform _floor;
-    [SerializeField] PowerUps _shieldPrefab, _starPrefab;
+    [SerializeField] PU_Star starPrefab;
+    [SerializeField] GameObject[] spawnPositions;
+    [SerializeField] float timeToSpawn;
+
+    PU_Star currentStar;
+    float timer;
+    int currentSpawnIndex;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) SpawnShield();
-        if (Input.GetKeyDown(KeyCode.O)) SpawnStar();
+        if(currentStar == null)
+        {
+            timer += Time.fixedDeltaTime;
+
+            if (timer >= timeToSpawn)
+            {
+                timer = 0;
+                SpawnStar(SetSpawnPos());
+            }
+        }        
     }
 
-    IEnumerator TimerSpawnShield()
+    GameObject SetSpawnPos()
     {
-        yield return new WaitForSeconds(5);
-        SpawnShield();
+        if (currentSpawnIndex > spawnPositions.Length-1) currentSpawnIndex = 0;
+        GameObject current = spawnPositions[currentSpawnIndex];
+        currentSpawnIndex++;        
+        return current;
     }
 
-    public void SpawnShield()
+    public void SpawnStar(GameObject spawnGO)
     {
-        RPC_SpawnShield();
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.Proxies)]
-    void RPC_SpawnShield()
-    {
-        var pos = GetRandomPos();
-        Runner.Spawn(_shieldPrefab, pos);
-    }
-
-    
-
-    public void SpawnStar()
-    {
-        var pos = GetRandomPos();
-        Runner.Spawn(_starPrefab, pos);
-    }
-
-    Vector3 GetRandomPos()
-    {
-        Vector3 spawnPos;
-
-        float posX = Random.Range(_limitX / 2, -_limitX / 2);
-        float posZ = Random.Range(_limitZ / 2, -_limitZ / 2);
-        spawnPos = new Vector3(posX, _floor.position.y + _varY, posZ);
-
-        return spawnPos;
+        currentStar = Instantiate(starPrefab);
+        currentStar.transform.position = spawnGO.transform.position;
     }
 
 }

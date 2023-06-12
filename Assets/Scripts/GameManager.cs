@@ -8,15 +8,23 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public event Action endGameStatus;
+    public int starsToWin;
+
+    public Action endGame_action;
+
 
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
     }
-    public void EndGame()
+
+    public void EndGame(Player winner)
     {
-        endGameStatus();
+        string mssg = winner.HasInputAuthority ? "GANASTE" : "PERDISTE";
+        Debug.Log(mssg);
+        if (winner.HasInputAuthority) UIManager.instance.Victory();
+        else UIManager.instance.Defeat();
+        endGame_action();
     }
 }
